@@ -1,14 +1,17 @@
-from read_yaml import get_config
-from read_file import load_dataset
+from s01_read_yaml import get_config
+from s02_prepare_data import prepare_input_output
+from s03_modeling import get_acc
+
+from utils.read_file import load_dataset
 
 
 def main():
     cfg = get_config()
     
-    data = load_dataset(cfg.get('data_path'))
+    X, y = prepare_input_output(cfg.get('prepare_data'))
     
-    print(data.info())
-
+    get_acc(X, y, cfg.get('modeling'))
+    
 
 if __name__ == '__main__':
     main()

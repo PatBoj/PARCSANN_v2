@@ -1,1 +1,14 @@
-data_path: data/test_data.csv
+prepare_data:
+  input_output_data:
+    file_path: data/test_data.csv
+
+  core_division: 32
+
+  output_cols:
+    - cycle_length_in_days
+
+modeling:
+  hidden_layer_sizes: [50, 50]
+  activation: identity
+
+# REaktywność: 1 - 1/keff
