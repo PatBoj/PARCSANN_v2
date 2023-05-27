@@ -12,11 +12,18 @@ prepare_data:
   # - ppf_max
   # - ppf_end
   # - cycle_length_in_days
-  output_cols:
+  output_cols: &output_cols
+    - keff_start
+    - keff_max
+    - ppf_start
+    - ppf_max
+    - ppf_end
     - cycle_length_in_days
+
 
 modeling:
   data:
+    standardization: True
     test_size: 0.2
     random_state: 42
 
@@ -36,6 +43,12 @@ modeling:
     loss_function: mean_squared_error
     optimizer: adam
 
-    epochs: 100
+    epochs: 200
+
+evaluate:
+  output_cols: *output_cols
+  metrics:
+    - mean_absolute_error
+    - mean_realative_error
 
 # Reaktywność: 1 - 1/keff

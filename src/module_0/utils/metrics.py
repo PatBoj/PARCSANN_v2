@@ -11,7 +11,7 @@ def mean_absolute_error(y_true, y_pred) -> np.float:
     
     abs_error = absolute_error(y_true, y_pred)
     
-    return np.average(abs_error)
+    return np.mean(abs_error, axis=0)
 
 
 def relative_error(y_true, y_pred) -> np.ndarray:
@@ -25,4 +25,4 @@ def mean_realative_error(y_true, y_pred) -> np.float:
     
     rel_error = relative_error(y_true, y_pred)
     
-    return np.average(rel_error)
+    return np.mean(rel_error, axis=0)
