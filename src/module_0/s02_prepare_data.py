@@ -4,18 +4,39 @@ import pandas as pd
 from utils.read_file import load_dataset
 
 
+def divide_core(df: pd.DataFrame, symmetry: str) -> pd.DataFrame:
+    """ Divides input data by given symmetry """
+    
+    if symmetry == '1/4':
+        col_select_index = 32
+    elif symmetry == '1/8':
+        col_select_index = 16
+        
+    return df.iloc[:, 0:col_select_index]
+
+
+def prepare_input(df: pd.DataFrame, symmetry: str) -> np.ndarray:
+    """ Prepare input data """
+    
+    input_data = divide_core(df, symmetry)
+    
+    return input_data.values
+
+
+def prepare_output(df: pd.DataFrame, cols_to_keep: np.ndarray) -> np.ndarray:
+    """ Filter output data based on the given columns """
+    
+    output_data = df.loc[:, cols_to_keep]
+    
+    return output_data.values
+
+
 def prepare_input_output(cfg: dict) -> tuple:
     """ Prepare input and output data """
     
-    df = load_dataset(cfg.get('input_output_data').get('file_path'))
-    input_data = df.iloc[:, 0:cfg.get('core_division')]
+    input_output_data = load_dataset(cfg.get('input_output_data'))
     
-    output_cols = cfg.get('output_cols')
-    
-    if output_cols is None:
-        raise ValueError('List of output columns is missing in the config file.')
-    
-    output_data = df.loc[:, output_cols]
-    output_data = np.ravel(output_data)
+    input_data = prepare_input(input_output_data, cfg.get('symmetry'))
+    output_data = prepare_output(input_output_data, cfg.get('output_cols'))
     
     return input_data, output_data

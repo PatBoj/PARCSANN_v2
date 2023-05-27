@@ -2,13 +2,40 @@ prepare_data:
   input_output_data:
     file_path: data/test_data.csv
 
-  core_division: 32
+  # Possible values: 1/4 and 1/8
+  symmetry: 1/4
 
+  # Possible outputs:
+  # - keff_start
+  # - keff_max
+  # - ppf_start
+  # - ppf_max
+  # - ppf_end
+  # - cycle_length_in_days
   output_cols:
     - cycle_length_in_days
 
 modeling:
-  hidden_layer_sizes: [50, 50]
-  activation: identity
+  data:
+    test_size: 0.2
+    random_state: 42
 
-# REaktywność: 1 - 1/keff
+  neural_network:
+    layers:
+      layer1:
+        neurons: 50
+        activation: linear
+
+      layer2:
+        neurons: 50
+        activation: linear
+
+      layer_output:
+        activation: linear
+
+    loss_function: mean_squared_error
+    optimizer: adam
+
+    epochs: 100
+
+# Reaktywność: 1 - 1/keff
