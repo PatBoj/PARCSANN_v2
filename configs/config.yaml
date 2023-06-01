@@ -53,22 +53,27 @@ use_monocores:
   # - rho_max
   transform_col_names:
     - rho_max
-    - rho_start
-    - cycle_length_in_days
-    - Pxy_max
-    - Pz_max
-    - PPF_max
-    - PPF_end
 
 
 # =============================================================================
 # MODELING
 # =============================================================================
 
+# Possible activation functions:
+# - relu
+# - sigmoid
+# - softmax
+# - softplus
+# - softsign
+# - tanh
+# - selu
+# - elu
+# - exponential
+# - linear
+
 modeling:
   data:
     test_size: 0.2
-    random_state: 42
 
   neural_network:
     normalize: true
@@ -88,7 +93,7 @@ modeling:
     loss_function: mean_squared_error
     optimizer: adam
 
-    epochs: 200
+    epochs: 100
 
 
 # =============================================================================

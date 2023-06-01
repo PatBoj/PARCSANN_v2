@@ -3,8 +3,7 @@ import pandas as pd
 import os
 
 from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Normalization
+from keras.layers import Dense, Normalization
 from sklearn.model_selection import train_test_split
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -15,8 +14,7 @@ def prepare_data(X: pd.DataFrame, y: pd.DataFrame, cfg: dict) -> tuple:
     
     X_train, X_test, y_train, y_test = train_test_split(
         X, y,
-        test_size=cfg.get('test_size'),
-        random_state=cfg.get('random_state'))
+        test_size=cfg.get('test_size'))
     
     return X_train, X_test, y_train, y_test
 
