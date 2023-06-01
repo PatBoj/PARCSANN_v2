@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from utils.useful_functions import get_output_columns
+
 from utils.metrics import mean_absolute_error
 from utils.metrics import std_absolute_error
 from utils.metrics import mean_relative_error
@@ -24,13 +26,13 @@ def apply_single_metric(
 
 def evaluate_model(
     y_true: np.ndarray, 
-    y_pred: np.ndarray, 
+    y_pred: np.ndarray,
+    output_titles: list,
     cfg: dict) -> pd.DataFrame:
     
-    output_names = cfg.get('output_cols')
     metric_names = cfg.get('metrics')
     
-    metric_matix = np.empty((0, len(output_names)))
+    metric_matix = np.empty((0, len(output_titles)))
     
     for metric in metric_names:
         metric_row = apply_single_metric(y_true, y_pred, metric)
@@ -38,7 +40,7 @@ def evaluate_model(
         
     metric_df = pd.DataFrame(
         metric_matix, 
-        columns=output_names, 
+        columns=output_titles, 
         index=metric_names)
     
     return metric_df

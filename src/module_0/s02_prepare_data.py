@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from utils.read_file import load_dataset
+from utils.useful_functions import get_output_columns
 
 
 def divide_core(df: pd.DataFrame, symmetry: str) -> pd.DataFrame:
@@ -25,7 +26,7 @@ def prepare_input(df: pd.DataFrame, symmetry: str) -> pd.DataFrame:
 
 def prepare_output(df: pd.DataFrame, cols_to_keep: np.ndarray) -> np.ndarray:
     """ Filter output data based on the given columns """
-    
+
     output_data = df.loc[:, cols_to_keep]
     
     return output_data.values
@@ -36,7 +37,10 @@ def prepare_input_output(cfg: dict) -> tuple:
     
     input_output_data = load_dataset(cfg.get('input_output_data'))
     
-    input_data = prepare_input(input_output_data, cfg.get('symmetry'))
-    output_data = prepare_output(input_output_data, cfg.get('output_cols'))
+    output_titles = get_output_columns(input_output_data, 
+        cfg.get('output_cols'))
     
-    return input_data, output_data
+    input_data = prepare_input(input_output_data, cfg.get('symmetry'))
+    output_data = prepare_output(input_output_data, output_titles)
+    
+    return input_data, output_data, output_titles
