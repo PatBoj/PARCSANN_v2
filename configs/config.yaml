@@ -23,7 +23,7 @@ prepare_data:
   # - rho_start
   # - rho_max
   output_cols: &output_cols
-    - cycle_length_in_days
+    - rho_max
 
 
 # =============================================================================
@@ -52,9 +52,13 @@ use_monocores:
   # - rho_start
   # - rho_max
   transform_col_names:
-    - cycle_length_in_days
     - rho_max
     - rho_start
+    - cycle_length_in_days
+    - Pxy_max
+    - Pz_max
+    - PPF_max
+    - PPF_end
 
 
 # =============================================================================
@@ -91,8 +95,16 @@ modeling:
 
 evaluate:
   output_cols: *output_cols
+
+  # Possible metrics:
+  # - mean_absolute_error
+  # - std_absolute_error
+  # - mean_relative_error
+  # - std_relative_error
   metrics:
     - mean_absolute_error
-    - mean_realative_error
+    - std_absolute_error
+    - mean_relative_error
+    - std_relative_error
 
 # Reaktywność: 1 - 1/keff

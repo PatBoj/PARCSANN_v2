@@ -2,7 +2,9 @@ import numpy as np
 import pandas as pd
 
 from utils.metrics import mean_absolute_error
-from utils.metrics import mean_realative_error
+from utils.metrics import std_absolute_error
+from utils.metrics import mean_relative_error
+from utils.metrics import std_relative_error
 
 
 def apply_single_metric(
@@ -12,9 +14,13 @@ def apply_single_metric(
     
     if metric == 'mean_absolute_error':
         return mean_absolute_error(y_true, y_pred)
-    elif metric == 'mean_realative_error':
-        return mean_realative_error(y_true, y_pred)
-    
+    elif metric == 'std_absolute_error':
+        return std_absolute_error(y_true, y_pred)
+    elif metric == 'mean_relative_error':
+        return mean_relative_error(y_true, y_pred)
+    elif metric == 'std_relative_error':
+        return std_relative_error(y_true, y_pred)
+
 
 def evaluate_model(
     y_true: np.ndarray, 
