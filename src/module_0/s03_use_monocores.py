@@ -20,7 +20,7 @@ def apply_single_col_dict(
     monocore_dict = monocore_df.set_index(core_number_col)[trans_col].to_dict()
     
     input_data_monocore = input_data.replace(monocore_dict)
-    input_data_monocore = input_data_monocore.add_suffix(trans_col)
+    input_data_monocore = input_data_monocore.add_suffix('_' + trans_col)
     
     return input_data_monocore
 
@@ -43,27 +43,26 @@ def apply_all_col_dict(
             core_number_col=core_number_col)
         
         input_data_monocore = pd.concat(
-            input_data_monocore, 
-            input_data_monocore_single, 
+            (input_data_monocore, input_data_monocore_single),
             axis=1)
         
     return input_data_monocore
 
 
 def apply_monocore_dictionary(
-    input_data: pd.DataFrame,
-    cfg: dict) -> pd.DataFrame:
+    input_data: pd.DataFrame, 
+    cfg: dict) -> np.ndarray:
     """ Apply monocore dictionary on the input data """
 
     if not cfg.get('execute'):
-        return input_data
+        return input_data.values
 
     monocore_df = load_monocore_data(cfg.get('monocre_data'))
     
     input_data_monocore = apply_all_col_dict(
         input_data=input_data,
-        monocore_dict=monocore_df,
+        monocore_df=monocore_df,
         core_number_col=cfg.get('core_number_column'),
         transform_col_names=cfg.get('transform_col_names'))
     
-    return input_data_monocore
+    return input_data_monocore.values

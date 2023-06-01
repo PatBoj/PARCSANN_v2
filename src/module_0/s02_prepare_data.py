@@ -23,12 +23,12 @@ def prepare_input(df: pd.DataFrame, symmetry: str) -> pd.DataFrame:
     return input_data
 
 
-def prepare_output(df: pd.DataFrame, cols_to_keep: np.ndarray) -> pd.DataFrame:
+def prepare_output(df: pd.DataFrame, cols_to_keep: np.ndarray) -> np.ndarray:
     """ Filter output data based on the given columns """
     
     output_data = df.loc[:, cols_to_keep]
     
-    return output_data
+    return output_data.values
 
 
 def prepare_input_output(cfg: dict) -> tuple:

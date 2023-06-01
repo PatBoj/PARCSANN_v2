@@ -36,7 +36,7 @@ def load_dataset(cfg: dict) -> pd.DataFrame:
     """ Read file using dictionary """
     
     df = read_raw_file(
-        cfg['file_path'], 
+        cfg.get('file_path'), 
         cfg.get('separator'), 
         cfg.get('sheet_name'))
     

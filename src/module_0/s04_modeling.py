@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 
+import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
@@ -89,6 +90,9 @@ def create_train_nn(X_train, y_train, cfg: dict) -> Sequential:
 
 def get_test_predict(X: np.ndarray, y: np.ndarray, cfg: dict) -> tuple:
 
+    np.random.seed(cfg.get('random_state'))
+    tf.random.set_seed(cfg.get('random_state'))
+    
     X_train, X_test, y_train, y_test = prepare_data(X, y, cfg.get('data'))
 
     model = create_train_nn(X_train, y_train, cfg.get('neural_network'))
