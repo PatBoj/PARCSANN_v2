@@ -30,6 +30,18 @@ def read_raw_file(
         return read_raw_csv(file_path, sep)
     else:
         raise NameError(f'Unsupported file format.')
+    
+    
+def create_new_columns(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+    """ Create new columns based on the configuration file """
+    
+    if cfg is None:
+        return df
+    
+    for new_col, formula in cfg.items():
+        df[new_col] = eval(formula)
+    
+    return df
 
 
 def load_dataset(cfg: dict) -> pd.DataFrame:
@@ -39,5 +51,7 @@ def load_dataset(cfg: dict) -> pd.DataFrame:
         cfg.get('file_path'), 
         cfg.get('separator'), 
         cfg.get('sheet_name'))
+    
+    df = create_new_columns(df, cfg.get('create_cols'))
     
     return df

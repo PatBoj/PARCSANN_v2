@@ -5,6 +5,10 @@
 prepare_data:
   input_output_data:
     file_path: data/input_output_data.csv
+    
+    create_cols: &create_cols
+      rho_start: '1 - 1/df.keff_start'
+      rho_max: '1 - 1/df.keff_max'
 
   # Possible values: 1/4 and 1/8
   symmetry: 1/4
@@ -16,12 +20,9 @@ prepare_data:
   # - ppf_max
   # - ppf_end
   # - cycle_length_in_days
+  # - rho_start
+  # - rho_max
   output_cols: &output_cols
-    - keff_start
-    - keff_max
-    - ppf_start
-    - ppf_max
-    - ppf_end
     - cycle_length_in_days
 
 
@@ -35,6 +36,7 @@ use_monocores:
   monocre_data:
     file_path: data/monocores_dictionary.xlsx
     sheet_name: summary
+    create_cols: *create_cols
 
   core_number_column: monocore
 
@@ -47,15 +49,12 @@ use_monocores:
   # - PPF_start
   # - PPF_max
   # - PPF_end
+  # - rho_start
+  # - rho_max
   transform_col_names:
     - cycle_length_in_days
-    - keff_max
-    - Pxy_max
-    - Pz_max
-    - keff_start
-    - PPF_start
-    - PPF_max
-    - PPF_end
+    - rho_max
+    - rho_start
 
 
 # =============================================================================

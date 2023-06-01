@@ -14,6 +14,7 @@ def apply_single_col_dict(
     input_data: pd.DataFrame, 
     monocore_df: pd.DataFrame,
     core_number_col: str) -> pd.DataFrame:
+    """ Apply monocre dictionary on a single transformation column """
     
     trans_col = monocore_df.columns[monocore_df.columns != core_number_col][0]
     
@@ -30,6 +31,7 @@ def apply_all_col_dict(
     monocore_df: pd.DataFrame,
     core_number_col: str, 
     transform_col_names: np.ndarray) -> pd.DataFrame:
+    """ Apply monocore dictionary on all transformation columns """
     
     input_data_monocore = pd.DataFrame()
     
