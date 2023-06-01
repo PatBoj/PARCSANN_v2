@@ -52,6 +52,12 @@ use_monocores:
   # - rho_start
   # - rho_max
   transform_col_names:
+    - cycle_length_in_days
+    - Pxy_max
+    - Pz_max
+    - PPF_max
+    - PPF_end
+    - rho_start
     - rho_max
 
 
@@ -73,9 +79,9 @@ use_monocores:
 
 modeling:
   data:
-    test_size: 0.2
+    train_split: 0.2
 
-  neural_network:
+  neural_network_layout:
     normalize: true
 
     layers:
@@ -90,10 +96,12 @@ modeling:
       layer_output:
         activation: linear
 
+  neural_network_compile:
     loss_function: mean_squared_error
-    optimizer: adam
+    learning_rate: 0.00002
 
-    epochs: 100
+  neural_network_learning:
+    epochs: 200
 
 
 # =============================================================================
