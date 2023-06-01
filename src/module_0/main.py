@@ -12,11 +12,13 @@ def main():
     
     X = apply_monocore_dictionary(input_data=X, cfg=cfg.get('use_monocores'))
     
-    y_true, y_pred = get_test_predict(X, y, cfg.get('modeling'))
+    # y_true, y_pred = get_test_predict(X, y, cfg.get('modeling'))
     
-    df_metrics = evaluate_model(y_true, y_pred, cfg.get('evaluate'))
+    # get_output_cols needs to be refactor
+    # WIP
+    # df_metrics = evaluate_model(y_true, y_pred, cfg.get('evaluate'))
     
-    print(df_metrics)
+    # print(df_metrics)
 
 if __name__ == '__main__':
     main()

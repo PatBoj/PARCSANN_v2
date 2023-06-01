@@ -6,9 +6,12 @@ prepare_data:
   input_output_data:
     file_path: data/input_output_data.csv
     
-    create_cols: &create_cols
+    create_cols: 
       rho_start: '1 - 1/df.keff_start'
       rho_max: '1 - 1/df.keff_max'
+
+      series:
+        rhoN: '1 - 1/df.keffN'
 
   # Possible values: 1/4 and 1/8
   symmetry: 1/4
@@ -22,6 +25,8 @@ prepare_data:
   # - cycle_length_in_days
   # - rho_start
   # - rho_max
+  # - keff_history
+  # - rho_history
   output_cols: &output_cols
     - rho_max
 
@@ -36,7 +41,9 @@ use_monocores:
   monocre_data:
     file_path: data/monocores_dictionary.xlsx
     sheet_name: summary
-    create_cols: *create_cols
+    create_cols: 
+      rho_start: '1 - 1/df.keff_start'
+      rho_max: '1 - 1/df.keff_max'
 
   core_number_column: monocore
 

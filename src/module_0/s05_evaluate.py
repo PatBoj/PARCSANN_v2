@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from utils.useful_functions import get_output_columns
+
 from utils.metrics import mean_absolute_error
 from utils.metrics import std_absolute_error
 from utils.metrics import mean_relative_error
@@ -27,7 +29,7 @@ def evaluate_model(
     y_pred: np.ndarray, 
     cfg: dict) -> pd.DataFrame:
     
-    output_names = cfg.get('output_cols')
+    output_names = get_output_columns(cfg.get('output_cols'))
     metric_names = cfg.get('metrics')
     
     metric_matix = np.empty((0, len(output_names)))
