@@ -90,15 +90,7 @@ def create_train_nn(X_train, y_train, cfg: dict) -> Sequential:
 def get_test_predict(X: np.ndarray, y: np.ndarray, cfg: dict) -> tuple:
 
     X_train, X_test, y_train, y_test = prepare_data(X, y, cfg.get('data'))
-    
-    if cfg.get('data').get('standardization'):
-        scaler = StandardScaler()
-        scaler.fit(y_train)
-        y_train = scaler.transform(y_train)
 
     model = create_train_nn(X_train, y_train, cfg.get('neural_network'))
-
-    if cfg.get('data').get('standardization'):
-        y_train = scaler.inverse_transform(y_train)
     
     return y_test, model.predict(X_test)

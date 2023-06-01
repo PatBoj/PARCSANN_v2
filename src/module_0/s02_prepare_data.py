@@ -15,20 +15,20 @@ def divide_core(df: pd.DataFrame, symmetry: str) -> pd.DataFrame:
     return df.iloc[:, 0:col_select_index]
 
 
-def prepare_input(df: pd.DataFrame, symmetry: str) -> np.ndarray:
+def prepare_input(df: pd.DataFrame, symmetry: str) -> pd.DataFrame:
     """ Prepare input data """
     
     input_data = divide_core(df, symmetry)
     
-    return input_data.values
+    return input_data
 
 
-def prepare_output(df: pd.DataFrame, cols_to_keep: np.ndarray) -> np.ndarray:
+def prepare_output(df: pd.DataFrame, cols_to_keep: np.ndarray) -> pd.DataFrame:
     """ Filter output data based on the given columns """
     
     output_data = df.loc[:, cols_to_keep]
     
-    return output_data.values
+    return output_data
 
 
 def prepare_input_output(cfg: dict) -> tuple:
