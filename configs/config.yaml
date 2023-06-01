@@ -71,6 +71,8 @@ modeling:
     random_state: 42
 
   neural_network:
+    normalize: true
+
     layers:
       layer1:
         neurons: 50
