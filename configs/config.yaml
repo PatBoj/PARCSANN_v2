@@ -28,7 +28,8 @@ prepare_data:
   # - keff_history
   # - rho_history
   output_cols: &output_cols
-    - rho_max
+    - rho_history
+    - cycle_length_in_days
 
 
 # =============================================================================
@@ -108,7 +109,7 @@ modeling:
     learning_rate: 0.00002
 
   neural_network_learning:
-    epochs: 200
+    epochs: 2
 
 
 # =============================================================================

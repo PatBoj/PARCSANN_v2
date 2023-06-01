@@ -20,6 +20,7 @@ def convert_lists_to_ndarrays(dictionary: dict) -> dict:
 
 
 def rename_history(df: pd.DataFrame, col_history: str) -> np.ndarray:
+    """ Get new column names based on the history column name """
     
     col_history = col_history.replace('_history', '')
     
@@ -32,6 +33,7 @@ def rename_history(df: pd.DataFrame, col_history: str) -> np.ndarray:
 
 
 def get_output_columns(df: pd.DataFrame, output_cols: np.ndarray) -> np.ndarray:
+    """ Get columns used in the output file """
     
     history_cols = np.char.endswith(output_cols, '_history')
     
