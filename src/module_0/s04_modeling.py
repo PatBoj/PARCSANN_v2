@@ -6,7 +6,6 @@ import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
