@@ -15,6 +15,7 @@ prepare_data:
 
   # Possible values: 1/4 and 1/8
   symmetry: 1/4
+  one_hot_encoding: &one_hot_encoding True
 
   # Possible outputs:
   # - keff_start
@@ -28,8 +29,7 @@ prepare_data:
   # - keff_history
   # - rho_history
   output_cols: &output_cols
-    - rho_history
-    - cycle_length_in_days
+    - rho_max
 
 
 # =============================================================================
@@ -38,6 +38,7 @@ prepare_data:
 
 use_monocores:
   execute: True
+  one_hot_encoding: *one_hot_encoding
 
   monocre_data:
     file_path: data/monocores_dictionary.xlsx
@@ -90,7 +91,7 @@ modeling:
     train_split: 0.2
 
   neural_network_layout:
-    normalize: true
+    normalize: True
 
     layers:
       layer1:
@@ -106,10 +107,10 @@ modeling:
 
   neural_network_compile:
     loss_function: mean_squared_error
-    learning_rate: 0.00002
+    learning_rate: 0.000001
 
   neural_network_learning:
-    epochs: 2
+    epochs: 100
 
 
 # =============================================================================
@@ -129,5 +130,4 @@ evaluate:
     - std_absolute_error
     - mean_relative_error
     - std_relative_error
-
-# Reaktywność: 1 - 1/keff
+  

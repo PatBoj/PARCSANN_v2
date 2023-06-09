@@ -14,7 +14,6 @@ def main():
 
     y_true, y_pred = get_test_predict(X=X, y=y, cfg=cfg.get('modeling'))
     
-    
     df_metrics = evaluate_model(
         y_true=y_true, 
         y_pred=y_pred, 
@@ -22,6 +21,7 @@ def main():
         cfg=cfg.get('evaluate'))
     
     print(df_metrics)
+
 
 if __name__ == '__main__':
     main()
