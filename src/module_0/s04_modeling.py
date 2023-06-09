@@ -53,12 +53,20 @@ def create_nn(
         model.add(Normalization())
     
     for layer in cfg.get('layers').values():
-        add_layer(
-            model=model, 
-            neurons=layer.get('neurons'), 
-            activation=layer.get('activation'), 
-            input_size=input_size,
-            output_size=output_size)
+        if layer != 'layer_output':
+            add_layer(
+                model=model, 
+                neurons=layer.get('neurons'), 
+                activation=layer.get('activation'), 
+                input_size=input_size,
+                output_size=output_size)
+            
+    add_layer(
+        model=model, 
+        neurons=None, 
+        activation=cfg.get('layers').get('layer_output').get('activation'), 
+        input_size=input_size, 
+        output_size=output_size)
     
     return model
 
@@ -86,7 +94,7 @@ def train_nn(
     model.fit(
         X_train, y_train, 
         epochs=cfg.get('epochs'),
-        validation_data=(X_test, y_test))
+        validation_data=(X_test, y_test), verbose=0)
 
 
 def plot_result(history):
@@ -99,7 +107,7 @@ def plot_result(history):
     plt.show()
 
 
-def get_test_predict(X: np.ndarray, y: np.ndarray, cfg: dict) -> tuple:
+def get_test_model(X: np.ndarray, y: np.ndarray, cfg: dict) -> tuple:
     """ Get prediction of the random sample along with testing data """
     
     X_train, X_test, y_train, y_test = prepare_data(X, y, cfg.get('data'))
@@ -119,6 +127,4 @@ def get_test_predict(X: np.ndarray, y: np.ndarray, cfg: dict) -> tuple:
         y_train=y_train,
         y_test=y_test)
     
-    plot_result(model.history)
-    
-    return y_test, model.predict(X_test)
+    return X_test, y_test, model

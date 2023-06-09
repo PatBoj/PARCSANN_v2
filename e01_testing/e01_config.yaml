@@ -92,25 +92,27 @@ modeling:
 
   neural_network_layout:
     normalize: True
+    activation_function: &activation linear
+    default_neurons: &neurons 60
 
     layers:
       layer1:
-        neurons: 60
-        activation: linear
+        neurons: *neurons
+        activation: *activation
 
       layer2:
-        neurons: 60
-        activation: linear
+        neurons: *neurons
+        activation: *activation
 
       layer_output:
-        activation: linear
+        activation: *activation
 
   neural_network_compile:
     loss_function: mean_squared_error
     learning_rate: 0.000001
 
   neural_network_learning:
-    epochs: 2
+    epochs: 200
 
 
 # =============================================================================
