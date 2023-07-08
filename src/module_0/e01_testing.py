@@ -48,15 +48,16 @@ def multiple_iterations(cfg:dict, iterations: int) -> pd.DataFrame:
 
 def main():
     
-    e_iterations = 12
+    e_iterations = 4
     
-    e_output_cols = ['ppf_start', 'ppf_max', 'ppf_end', 'cycle_length_in_days',
-                     'rho_start', 'rho_max']
+    # e_output_cols = ['ppf_start', 'ppf_max', 'ppf_end', 'cycle_length_in_days',
+    #                  'rho_start', 'rho_max']
+    e_output_cols = ['cycle_length_in_days']
     
     e_one_hot = [True, False]
     e_normalize = [True, False]
     
-    e_neurons = [30, 60, 90]
+    e_neurons = [30, 60]
     e_layers = [2, 3]
     
     e_activation_functions = ['sigmoid', 'linear']

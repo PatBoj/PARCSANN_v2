@@ -94,7 +94,7 @@ def train_nn(
     model.fit(
         X_train, y_train, 
         epochs=cfg.get('epochs'),
-        validation_data=(X_test, y_test), verbose=0)
+        validation_data=(X_test, y_test), verbose=1)
 
 
 def plot_result(history):
