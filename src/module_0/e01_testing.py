@@ -3,6 +3,9 @@ import numpy as np
 import itertools
 import datetime
 from tqdm import tqdm
+from pprint import pprint
+
+from utils.useful_functions import update_config
 
 from s01_read_yaml import load_yaml
 from s02_prepare_data import prepare_input_output
@@ -25,19 +28,26 @@ def single_iteration(cfg: dict) -> pd.DataFrame:
         output_titles=output_titles,
         cfg=cfg.get('evaluate'))
     
+    print(df_metrics)
+    
     return df_metrics
 
 
-def multiple_iterations(cfg:dict, iterations: int) -> pd.DataFrame:
+def multiple_iterations(cfg: dict, iterations: int) -> pd.DataFrame:
     
     df_metrics = pd.DataFrame()
-    for i in range(0, iterations):
+    for _ in range(0, iterations):
         df_metrics = pd.concat((df_metrics, single_iteration(cfg)), axis=1)
         
-    mean_absolute_error = np.mean(df_metrics.loc['mean_absolute_error', :].values)
-    std_absolute_error = np.sqrt(np.mean(np.square(df_metrics.loc['std_absolute_error', :].values)))
-    mean_relative_error = np.mean(df_metrics.loc['mean_relative_error', :].values)
-    std_relative_error = np.sqrt(np.mean(np.square(df_metrics.loc['std_relative_error', :].values)))
+    mean_absolute_error = np.mean(
+        df_metrics.loc['mean_absolute_error', :].values)
+    mean_relative_error = np.mean(
+        df_metrics.loc['mean_relative_error', :].values)
+    
+    std_absolute_error = np.sqrt(np.mean(np.square(
+        df_metrics.loc['std_absolute_error', :].values)))
+    std_relative_error = np.sqrt(np.mean(np.square(
+        df_metrics.loc['std_relative_error', :].values)))
     
     df = pd.DataFrame({'mean_absolute_error': [mean_absolute_error],
                        'std_absolute_error': [std_absolute_error],
@@ -46,38 +56,51 @@ def multiple_iterations(cfg:dict, iterations: int) -> pd.DataFrame:
     
     return df
 
+
+def set_parameters() -> list:
+    
+    output_cols = {
+        'output_cols': [['ppf_max'], ['cycle_length_in_days'], ['rho_max']]}
+    
+    one_hot_encoding = {'one_hot_encoding': [True, False]}
+    normalize = {'normalize': [True, False]}
+    
+    neurons = {'neurons': [30, 60, 90]}
+    layers = {'layers': [2, 3]}
+    
+    activation_functions = {'activation_function': ['linear']}
+    loss_functions = {'loss_function': ['mean_absolute_percentage_error']}
+    
+    keys = [
+        *output_cols, *one_hot_encoding, *normalize, *neurons, *layers, 
+        *activation_functions, *loss_functions]
+    
+    values = list(itertools.product(
+        list(itertools.chain.from_iterable(output_cols.values())),
+        list(itertools.chain.from_iterable(one_hot_encoding.values())),
+        list(itertools.chain.from_iterable(normalize.values())),
+        list(itertools.chain.from_iterable(neurons.values())),
+        list(itertools.chain.from_iterable(layers.values())),
+        list(itertools.chain.from_iterable(activation_functions.values())), 
+        list(itertools.chain.from_iterable(loss_functions.values()))))
+    
+    params_list = []
+    
+    for one_iteration_params in values:
+        params_list.append(dict(zip(keys, one_iteration_params)))
+    
+    return params_list
+
 def main():
     
-    e_iterations = 4
-    
-    # e_output_cols = ['ppf_start', 'ppf_max', 'ppf_end', 'cycle_length_in_days',
-    #                  'rho_start', 'rho_max']
-    e_output_cols = ['cycle_length_in_days']
-    
-    e_one_hot = [True, False]
-    e_normalize = [True, False]
-    
-    e_neurons = [30, 60]
-    e_layers = [2, 3]
-    
-    e_activation_functions = ['sigmoid', 'linear']
-    e_loss_functions = ['mean_absolute_percentage_error', 'mean_squared_error']
-
-    e_variables = [
-        e_output_cols, 
-        e_one_hot, 
-        e_normalize, 
-        e_activation_functions, 
-        e_loss_functions,
-        e_neurons,
-        e_layers] 
-    
-    e_variables = list(itertools.product(*e_variables))
+    e_iterations = 12
     
     e_df = pd.DataFrame(columns=[
         'mean_absolute_error', 'std_absolute_error', 'mean_relative_error', 
         'std_relative_error', 'output_col', 'one_hot', 'normalize', 
         'activation_function', 'loss_function', 'neurons', 'layers'])
+    
+    e_variables = set_parameters()
     
     start_time = datetime.datetime.now()
     progress_bar = tqdm(total=len(e_variables), desc="Progress", unit="iteration")
@@ -86,23 +109,17 @@ def main():
         
         cfg = load_yaml(path='e01_testing/e01_config.yaml')
         
-        output_col, one_hot, normalize, activation_function, loss_function, neurons, layers = var
+        for key in var:
+            if key != 'layers':
+                update_config(cfg, key, var[key])
         
-        cfg['prepare_data']['output_cols'] = np.array([output_col])
-        cfg['prepare_data']['one_hot'] = one_hot
-        
-        cfg['modeling']['neural_network_layout']['activation_function'] = activation_function
-        cfg['modeling']['neural_network_layout']['normalize'] = normalize
-        cfg['modeling']['neural_network_layout']['default_neurons'] = neurons
-        cfg['modeling']['neural_network_compile']['loss_function'] = loss_function
-        
-        if layers >= 3:
+        if var['layers'] >= 3:
             cfg['modeling']['neural_network_layout']['layers']['layer3']\
-                = {'neurons': neurons, 'activation': activation_function}
+                = {'neurons': var['neurons'], 'activation': var['activation_function']}
         
-        if layers == 4:
+        if var['layers'] == 4:
             cfg['modeling']['neural_network_layout']['layers']['layer4']\
-                = {'neurons': neurons, 'activation': activation_function}
+                = {'neurons': var['neurons'], 'activation': var['activation_function']}
         
         df_metrics = multiple_iterations(cfg, e_iterations)
         df_var = pd.DataFrame([var], columns=[
@@ -116,6 +133,7 @@ def main():
         progress_bar.update(1)
         
     e_df.to_csv('e01_testing/metrics.csv', index=False)
+    
         
     # Stop the timer
     end_time = datetime.datetime.now()

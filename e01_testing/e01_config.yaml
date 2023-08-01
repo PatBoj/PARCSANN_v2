@@ -93,7 +93,7 @@ modeling:
   neural_network_layout:
     normalize: True
     activation_function: &activation linear
-    default_neurons: &neurons 60
+    default_neurons: &neurons 2
 
     layers:
       layer1:

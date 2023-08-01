@@ -49,4 +49,16 @@ def get_output_columns(df: pd.DataFrame, output_cols: np.ndarray) -> np.ndarray:
     
     return output_cols
     
-    
+
+def update_config(d, key_to_update, new_value):
+    """ Update a value in dictionary based on given key """
+
+    if isinstance(d, dict):
+        for key, value in d.items():
+            if key == key_to_update:
+                d[key] = new_value
+            elif isinstance(value, dict):
+                update_config(value, key_to_update, new_value)
+    elif isinstance(d, list):
+        for item in d:
+            update_config(item, key_to_update, new_value)
