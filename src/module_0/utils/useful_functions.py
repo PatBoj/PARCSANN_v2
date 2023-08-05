@@ -1,3 +1,4 @@
+import itertools
 import numpy as np
 import pandas as pd
 import re
@@ -50,15 +51,40 @@ def get_output_columns(df: pd.DataFrame, output_cols: np.ndarray) -> np.ndarray:
     return output_cols
     
 
-def update_config(d, key_to_update, new_value):
+def update_config(cfg: dict, key_to_update: str, new_value):
     """ Update a value in dictionary based on given key """
 
-    if isinstance(d, dict):
-        for key, value in d.items():
+    if isinstance(cfg, dict):
+        for key, value in cfg.items():
             if key == key_to_update:
-                d[key] = new_value
+                cfg[key] = new_value
             elif isinstance(value, dict):
                 update_config(value, key_to_update, new_value)
-    elif isinstance(d, list):
-        for item in d:
+    elif isinstance(cfg, list):
+        for item in cfg:
             update_config(item, key_to_update, new_value)
+            
+            
+def convert_to_list(input_data) -> list:
+    if not isinstance(input_data, list):
+        return [input_data]
+    return input_data
+
+
+def set_parameters(**params) -> list:
+    
+    for key in params:
+        params[key] = convert_to_list(params[key])
+    
+    values = list(itertools.product(*params.values()))
+    
+    return [dict(zip([*params], val)) for val in values]
+
+
+def unpack_list(input_vector: list) -> list:
+    
+    for i in range(len(input_vector)):
+        if isinstance(input_vector[i], list):
+            input_vector[i] = ', '.join(input_vector[i])
+            
+    return input_vector

@@ -1,9 +1,7 @@
-mean_absolute_error,std_absolute_error,mean_relative_error,std_relative_error,output_col,one_hot,normalize,activation_function,loss_function,neurons,layers
-0.8866403336379394,0.7708150454422119,0.002103227442644251,0.001898106439453409,cycle_length_in_days,True,True,linear,mean_absolute_percentage_error,60,2
-0.8394627191857911,0.7315360522203548,0.001990807506166027,0.0017976856681226738,cycle_length_in_days,True,True,linear,mean_absolute_percentage_error,20,2
-2.9410813244802245,2.904550764033988,0.006952376049578971,0.006973075335622708,cycle_length_in_days,True,False,linear,mean_absolute_percentage_error,60,2
-3.018290650056397,3.5280277275729857,0.007115157339567569,0.008345411715436657,cycle_length_in_days,True,False,linear,mean_absolute_percentage_error,20,2
-2.490869970376709,2.4301963345978397,0.005899983899727214,0.0058834604246608664,cycle_length_in_days,False,True,linear,mean_absolute_percentage_error,60,2
-0.8306749981691894,0.7300323524129301,0.0019705136529601453,0.0017946629705964683,cycle_length_in_days,False,True,linear,mean_absolute_percentage_error,20,2
-0.8497867133032228,0.7286292913436608,0.002017952431538313,0.001792910098785496,cycle_length_in_days,False,False,linear,mean_absolute_percentage_error,60,2
-3.025296219552002,3.4512555821769477,0.007136643153912263,0.008211142545259032,cycle_length_in_days,False,False,linear,mean_absolute_percentage_error,20,2
+iteration,mean_absolute_error,std_absolute_error,mean_relative_error,std_relative_error,output_cols,one_hot_encoding,normalize,neurons,layers,activation_functions,loss_functions
+1,41.380920005501174,30.612924026092976,12.87537136643738,10.275277664174832,ppf_max,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+2,95.13628302908661,73.27479999084355,29.093214660764307,24.251191199203518,ppf_max,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+3,98.21893302540057,76.49754486084028,29.989037083324032,24.888876129437815,ppf_max,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+1,393.83002603871597,55.18667966108954,0.9232466343651509,0.11959000258466741,cycle_length_in_days,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+2,422.15877559596913,116.73430432184199,0.9914353396118684,0.2711144968567656,cycle_length_in_days,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+3,406.6713783473563,29.082309968493725,0.9528913660418432,0.04652457134076555,cycle_length_in_days,True,True,30.0,2.0,linear,mean_absolute_percentage_error

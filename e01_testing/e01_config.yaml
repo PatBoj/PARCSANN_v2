@@ -112,7 +112,7 @@ modeling:
     learning_rate: 0.000001
 
   neural_network_learning:
-    epochs: 200
+    epochs: 2
 
 
 # =============================================================================
