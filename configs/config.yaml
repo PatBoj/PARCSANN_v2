@@ -1,78 +1,91 @@
-# =============================================================================
-# PREPARE DATA
-# =============================================================================
+# =================================================================================================
+# GENERAL SETTINGS
+# =================================================================================================
 
-prepare_data:
-  input_output_data:
-    file_path: data/input_output_data.csv
-    
-    create_cols: 
+# Possible values: 1/4 and 1/8
+core_symmetry: 1/4
+
+one_hot_encoding: False
+
+train_split: 0.2
+
+# Possible outputs:
+# - keff_start
+# - keff_max
+# - ppf_start
+# - ppf_max
+# - ppf_end
+# - cycle_length_in_days
+# - rho_start
+# - rho_max
+# - keff_evolution
+# - rho_evolution
+output_columns:
+  - rho_evolution
+
+
+# =================================================================================================
+# INPUT FILES SETTINGS
+# =================================================================================================
+
+input_output_file_details:
+  file_path: data/input_output_data.csv
+  
+  create_new_cols:
+    single_cols:
       rho_start: '1 - 1/df.keff_start'
       rho_max: '1 - 1/df.keff_max'
 
-      series:
-        rhoN: '1 - 1/df.keffN'
-
-  # Possible values: 1/4 and 1/8
-  symmetry: 1/4
-  one_hot_encoding: &one_hot_encoding False
-
-  # Possible outputs:
-  # - keff_start
-  # - keff_max
-  # - ppf_start
-  # - ppf_max
-  # - ppf_end
-  # - cycle_length_in_days
-  # - rho_start
-  # - rho_max
-  # - keff_history
-  # - rho_history
-  output_cols: &output_cols
-    - cycle_length_in_days
+    multiple_cols:
+      rhoN: '1 - 1/df.keffN'
 
 
-# =============================================================================
-# USING MONOCORES DICTIONARY
-# =============================================================================
+monocore_file_details:
+  file_path: data/monocores_dictionary.xlsx
+  sheet_name: summary
 
-use_monocores:
-  execute: True
-  one_hot_encoding: *one_hot_encoding
-
-  monocre_data:
-    file_path: data/monocores_dictionary.xlsx
-    sheet_name: summary
-    create_cols: 
+  create_new_cols:
+    single_cols:
       rho_start: '1 - 1/df.keff_start'
       rho_max: '1 - 1/df.keff_max'
 
-  core_number_column: monocore
 
-  # Possible transform colum names:
-  # - cycle_length_in_days
-  # - keff_max
-  # - Pxy_max
-  # - Pz_max
-  # - keff_start
-  # - PPF_start
-  # - PPF_max
-  # - PPF_end
-  # - rho_start
-  # - rho_max
-  transform_col_names:
-    - cycle_length_in_days
-    - Pxy_max
-    - Pz_max
-    - PPF_max
-    - PPF_end
-    - rho_start
-    - rho_max
+monocore_evolution_file_details:
+  file_path: data/monocores_dictionary.xlsx
+
+  create_new_cols:
+    single_cols:
+      rho: '1 - 1/df.keff'
 
 
-# =============================================================================
-# MODELING
-# =============================================================================
+# =================================================================================================
+# MONOCORE SETTINGS
+# =================================================================================================
+
+use_monocores: True
+core_number_column_name: monocore
+
+# Possible transform colum names:
+# - cycle_length_in_days
+# - keff_max
+# - pxy_max
+# - pz_max
+# - keff_start
+# - ppf_start
+# - ppf_max
+# - ppf_end
+# - rho_start
+# - rho_max
+# - keff_evolution
+# - rho_evolution
+# - ppf_evolution
+transform_column_names:
+  - rho_evolution
+
+
+# =================================================================================================
+# NEURAL NETWORK SETTINGS
+# =================================================================================================
 
 # Possible activation functions:
 # - relu
@@ -86,48 +99,40 @@ use_monocores:
 # - exponential
 # - linear
 
-modeling:
-  data:
-    train_split: 0.2
+layers:
+  layer1:
+    neurons: 60
+    activation: linear
 
-  neural_network_layout:
-    normalize: False
+  layer2:
+    neurons: 60
+    activation: linear
 
-    layers:
-      layer1:
-        neurons: 30
-        activation: linear
+  layer3:
+    neurons: 60
+    activation: linear
 
-      layer2:
-        neurons: 30
-        activation: linear
+  layer_output:
+    activation: linear
 
-      layer_output:
-        activation: linear
-
-  neural_network_compile:
-    loss_function: mean_absolute_percentage_error
-    learning_rate: 0.000001
-
-  neural_network_learning:
-    epochs: 1000
+normalize: True
+loss_function: mean_absolute_percentage_error
+learning_rate: 0.000001
+epochs: 2000
 
 
 # =============================================================================
 # EVALUATION OF THE MODEL
 # =============================================================================
 
-evaluate:
-  output_cols: *output_cols
-
-  # Possible metrics:
-  # - mean_absolute_error
-  # - std_absolute_error
-  # - mean_relative_error
-  # - std_relative_error
-  metrics:
-    - mean_absolute_error
-    - std_absolute_error
-    - mean_relative_error
-    - std_relative_error
+# Possible metrics:
+# - mean_absolute_error
+# - std_absolute_error
+# - mean_relative_error
+# - std_relative_error
+metrics:
+  - mean_absolute_error
+  - std_absolute_error
+  - mean_relative_error
+  - std_relative_error
   
