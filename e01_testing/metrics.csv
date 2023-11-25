@@ -1,0 +1,7 @@
+iteration,mean_absolute_error,std_absolute_error,mean_relative_error,std_relative_error,output_cols,one_hot_encoding,normalize,neurons,layers,activation_functions,loss_functions
+1,41.380920005501174,30.612924026092976,12.87537136643738,10.275277664174832,ppf_max,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+2,95.13628302908661,73.27479999084355,29.093214660764307,24.251191199203518,ppf_max,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+3,98.21893302540057,76.49754486084028,29.989037083324032,24.888876129437815,ppf_max,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+1,393.83002603871597,55.18667966108954,0.9232466343651509,0.11959000258466741,cycle_length_in_days,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+2,422.15877559596913,116.73430432184199,0.9914353396118684,0.2711144968567656,cycle_length_in_days,True,True,30.0,2.0,linear,mean_absolute_percentage_error
+3,406.6713783473563,29.082309968493725,0.9528913660418432,0.04652457134076555,cycle_length_in_days,True,True,30.0,2.0,linear,mean_absolute_percentage_error

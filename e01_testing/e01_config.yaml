@@ -15,7 +15,7 @@ prepare_data:
 
   # Possible values: 1/4 and 1/8
   symmetry: 1/4
-  one_hot_encoding: &one_hot_encoding False
+  one_hot_encoding: &one_hot_encoding True
 
   # Possible outputs:
   # - keff_start
@@ -29,7 +29,7 @@ prepare_data:
   # - keff_history
   # - rho_history
   output_cols: &output_cols
-    - cycle_length_in_days
+    - rho_max
 
 
 # =============================================================================
@@ -91,26 +91,28 @@ modeling:
     train_split: 0.2
 
   neural_network_layout:
-    normalize: False
+    normalize: True
+    activation_function: &activation linear
+    default_neurons: &neurons 2
 
     layers:
       layer1:
-        neurons: 30
-        activation: linear
+        neurons: *neurons
+        activation: *activation
 
       layer2:
-        neurons: 30
-        activation: linear
+        neurons: *neurons
+        activation: *activation
 
       layer_output:
-        activation: linear
+        activation: *activation
 
   neural_network_compile:
-    loss_function: mean_absolute_percentage_error
+    loss_function: mean_squared_error
     learning_rate: 0.000001
 
   neural_network_learning:
-    epochs: 1000
+    epochs: 2
 
 
 # =============================================================================
