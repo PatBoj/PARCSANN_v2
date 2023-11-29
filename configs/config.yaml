@@ -116,7 +116,7 @@ layers:
     activation: linear
 
 normalize: True
-loss_function: mean_absolute_percentage_error
+loss_function: mean_squared_error
 learning_rate: 0.000001
 epochs: 2000
 
