@@ -1,17 +1,12 @@
+from loguru import logger
 import pandas as pd
-import numpy as np
-import itertools
-import datetime
-from tqdm import tqdm
-from pprint import pprint
+
+from s01_prepare_data import prepare_input_output
+from s02_use_monocores import apply_monocore_dictionary
+from s04_model import get_test_model
+from s05_evaluate import evaluate_model
 
 from utils.useful_functions import update_config, set_parameters, unpack_list
-
-from s01_read_yaml import load_yaml
-from s02_prepare_data import prepare_input_output
-from s03_use_monocores import apply_monocore_dictionary
-from s04_modeling import get_test_model
-from s05_evaluate import evaluate_model
 
 
 def single_iteration(cfg: dict) -> pd.DataFrame:

@@ -2,12 +2,11 @@
 # GENERAL SETTINGS
 # =================================================================================================
 
-# Possible values: 1/4 and 1/8
-core_symmetry: 1/4
-
-one_hot_encoding: False
-
+core_symmetry: 1/4 # Possible values: 1/4 and 1/8
+one_hot_encoding: True
+transform_output: True
 train_split: 0.2
+save_output: True
 
 # Possible outputs:
 # - keff_start
@@ -21,7 +20,8 @@ train_split: 0.2
 # - keff_evolution
 # - rho_evolution
 output_columns:
-  - rho_evolution
+  - rho_max
+  - cycle_length_in_days
 
 
 # =================================================================================================
@@ -80,7 +80,9 @@ core_number_column_name: monocore
 # - rho_evolution
 # - ppf_evolution
 transform_column_names:
-  - rho_evolution
+  - ppf_max
+  - rho_max
+  - cycle_length_in_days
 
 
 # =================================================================================================
@@ -101,15 +103,11 @@ transform_column_names:
 
 layers:
   layer1:
-    neurons: 60
-    activation: linear
+    neurons: 30
+    activation: tanh
 
   layer2:
-    neurons: 60
-    activation: linear
-
-  layer3:
-    neurons: 60
+    neurons: 30
     activation: linear
 
   layer_output:
@@ -118,7 +116,21 @@ layers:
 normalize: True
 loss_function: mean_squared_error
 learning_rate: 0.000001
-epochs: 2000
+epochs: 2
+
+
+# =============================================================================
+# SAVING THE OUTPUT
+# =============================================================================
+
+output_directory: output
+add_timestamp: True
+add_preffix_number: True
+
+create_config_file: True
+create_evaluation_file: True
+create_loss_plot: True
+create_accuracy_plot: True
 
 
 # =============================================================================
@@ -135,4 +147,4 @@ metrics:
   - std_absolute_error
   - mean_relative_error
   - std_relative_error
-  
+

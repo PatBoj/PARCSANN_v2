@@ -1,11 +1,11 @@
-import itertools
+from itertools import compress, product
 import numpy as np
 import pandas as pd
 import re
 
 
 def rename_evolution_cols(df: pd.DataFrame, col_evolution: str) -> np.ndarray:
-    """ Get new column names based on the evolution column name """
+    """ Get column names based on the evolution column name in the config file """
     
     col_evolution = col_evolution.replace('_evolution', '')
     pattern = fr'^{col_evolution}.*\d+$'
@@ -18,17 +18,16 @@ def rename_evolution_cols(df: pd.DataFrame, col_evolution: str) -> np.ndarray:
 def get_output_column_names(df: pd.DataFrame, output_cols: list) -> list:
     """ Get columns used in the output file """
     
-    evolution_cols = np.char.endswith(output_cols, '_evolution')
+    evolution_cols_mask = np.char.endswith(output_cols, '_evolution')
     
-    if not evolution_cols.any():
+    if not evolution_cols_mask.any():
         return output_cols
     
-    output_cols, evolution_cols = list(itertools.compress(output_cols, ~evolution_cols)),\
-        list(itertools.compress(output_cols, evolution_cols))
+    evolution_cols = list(compress(output_cols, evolution_cols_mask))
+    output_cols = list(compress(output_cols, evolution_cols_mask))
     
-    for hist_col in evolution_cols:
-        new_cols = rename_evolution_cols(df, hist_col)
-        output_cols += new_cols
+    for evolution_col in evolution_cols:
+        output_cols += rename_evolution_cols(df, evolution_col)
     
     return output_cols
     
@@ -54,11 +53,11 @@ def convert_to_list(input_data) -> list:
 
 
 def set_parameters(**params) -> list:
-    
+
     for key in params:
         params[key] = convert_to_list(params[key])
     
-    values = list(itertools.product(*params.values()))
+    values = list(product(*params.values()))
     
     return [dict(zip([*params], val)) for val in values]
 

@@ -1,0 +1,59 @@
+add_preffix_number: true
+add_timestamp: true
+core_number_column_name: monocore
+core_symmetry: 1/4
+create_accuracy_plot: true
+create_config_file: true
+create_evaluation_file: true
+create_loss_plot: true
+epochs: 2
+input_output_file_details:
+  create_new_cols:
+    multiple_cols:
+      rhoN: 1 - 1/df.keffN
+    single_cols:
+      rho_max: 1 - 1/df.keff_max
+      rho_start: 1 - 1/df.keff_start
+  file_path: data/input_output_data.csv
+layers:
+  layer1:
+    activation: tanh
+    neurons: 30
+  layer2:
+    activation: linear
+    neurons: 30
+  layer_output:
+    activation: linear
+learning_rate: 1.0e-06
+loss_function: mean_squared_error
+metrics:
+- mean_absolute_error
+- std_absolute_error
+- mean_relative_error
+- std_relative_error
+monocore_evolution_file_details:
+  create_new_cols:
+    single_cols:
+      rho: 1 - 1/df.keff
+  file_path: data/monocores_dictionary.xlsx
+monocore_file_details:
+  create_new_cols:
+    single_cols:
+      rho_max: 1 - 1/df.keff_max
+      rho_start: 1 - 1/df.keff_start
+  file_path: data/monocores_dictionary.xlsx
+  sheet_name: summary
+normalize: true
+one_hot_encoding: true
+output_columns:
+- rho_max
+- cycle_length_in_days
+output_directory: output
+save_output: true
+train_split: 0.2
+transform_column_names:
+- ppf_max
+- rho_max
+- cycle_length_in_days
+transform_output: true
+use_monocores: true

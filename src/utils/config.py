@@ -4,14 +4,14 @@ from loguru import logger
 
 
 def load_yaml(path: str) -> dict:
-    """ Load a YAML file from the given path and return its content as a dictionary. """
+    """ Load a YAML file from the given path and return its content as a dictionary """
 
     logger.info(f'Reading YAML file {path}.')
     return safe_load(open(path, mode='r'))
 
 
 def load_config() -> dict:
-    """ Load a configuration from a YAML file and return it as a dictionary. """
+    """ Load and check a configuration from a YAML file and return it as a dictionary """
 
     cfg = load_yaml('configs/config.yaml')
     check_config(cfg)
@@ -20,6 +20,7 @@ def load_config() -> dict:
 
 
 def basic_errors(variable: object, variable_name: str, variable_type: object) -> None:
+    """ Check if the variable exists and if it has a good data type """
     
     if variable is None:
         raise KeyError(f'"{variable_name}" is missing in a configuration file.')
@@ -30,6 +31,7 @@ def basic_errors(variable: object, variable_name: str, variable_type: object) ->
 
 @logger.catch(onerror=lambda _: sys.exit(1))
 def check_config(cfg: dict) -> None:
+    """ Check configuration file for errors """
     
     ### CORE SYMMETRY ###
     core_symmetry = cfg.get('core_symmetry')
@@ -37,6 +39,11 @@ def check_config(cfg: dict) -> None:
 
     if core_symmetry not in ['1/4', '1/8']:
         raise ValueError(f'Invalid "core_symmetry" value: "{core_symmetry}", "1/4" or "1/8" values are possible.')
+
+
+    ### TRANSFORM OUTPUT ###
+    transform_output = cfg.get('transform_output')
+    basic_errors(transform_output, 'transform_output', bool)
 
 
     ### ONE HOT ENCODING ###

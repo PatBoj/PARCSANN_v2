@@ -1,10 +1,30 @@
 import numpy as np
 import pandas as pd
 from loguru import logger
+from itertools import compress
 
 from utils.read_file import load_dataset
 from utils.config import CFG
-from pprint import pprint
+
+def apply_one_hot_encoder(df: pd.DataFrame) -> pd.DataFrame:
+    """ Apply one hot encoder to the input data """
+    
+    df_one_hot = df.astype(str)
+    df_one_hot = pd.get_dummies(df_one_hot, dtype=int)
+    
+    return df_one_hot
+
+
+def divide_evolution_names() -> tuple:
+    """ Divide evolution column names from regular one """
+    
+    transform_column_names = CFG['transform_column_names']
+    evolution_mask = np.char.endswith(transform_column_names, '_evolution')
+    
+    transform_evolution = list(compress(transform_column_names, evolution_mask))
+    transform_regular = list(compress(transform_column_names, ~evolution_mask))
+    
+    return transform_evolution, transform_regular
 
 
 def apply_single_col_dict_one_hot(input_data: pd.DataFrame, monocore_dict: dict) -> pd.DataFrame:
@@ -41,13 +61,16 @@ def apply_single_col_dict(input_data: pd.DataFrame, monocore_df: pd.DataFrame) -
     return input_data_monocore
 
 
-def apply_all_col_dict(input_data: pd.DataFrame, monocore_df: pd.DataFrame) -> pd.DataFrame:
+def apply_all_col_dict(
+    input_data: pd.DataFrame,
+    monocore_df: pd.DataFrame,
+    transform_columns: list) -> pd.DataFrame:
     """ Apply monocore dictionary on all transformation columns """
 
     input_data_monocore = pd.DataFrame()
     
     logger.info('Transforming monocres columns.')
-    for trans_col in CFG['transform_column_names']:
+    for trans_col in transform_columns:
         logger.info(f'Transforming column: "{trans_col}".')
         monocore_df_single = monocore_df.loc[:, [CFG['core_number_column_name'], trans_col]]
         
@@ -89,36 +112,43 @@ def expand_input_data(input_data: pd.DataFrame, evolution_dictionary: dict) -> p
         temp_input = apply_single_col_dict_direcly(temp_input, temp_dict)
         
         expand_input = pd.concat((expand_input, temp_input), axis=1)
-    
-    # for column_name, values in input_data.items():
-    #     for i in range(69):
-    #         expand_input[f'{column_name}_{i}_rho{i}'] = values.astype(str) + '_' + str(i)
             
     return expand_input
 
 
-def apply_monocore_dictionary(input_data: pd.DataFrame) -> np.ndarray:
+def transform_input(input_data: pd.DataFrame) -> np.ndarray:
     """ Apply monocore dictionary on the input data """
-
-    if any('_evolution' in col_name for col_name in CFG['transform_column_names']):
-        
-        logger.info('Creating evolution dictionary.')
-        evolution_dictionary = create_evolution_dict(CFG['transform_column_names'][0])
+    
+    input_data_transform = pd.DataFrame()
+    
+    logger.info('Divide evolution column names from regular ones.')
+    evolution_cols, regular_cols = divide_evolution_names()
+    
+    for col in evolution_cols:
+        logger.info(f'Creating evolution dictionary for "{col}".')
+        evolution_dictionary = create_evolution_dict(col)
         
         logger.info('Expanding input data.')
-        input_data_monocore = expand_input_data(input_data, evolution_dictionary)
+        input_data_evolution = expand_input_data(input_data, evolution_dictionary)
         
-    
-    else:
+        input_data_transform = pd.concat((input_data_transform, input_data_evolution), axis=1)
+        
+    if regular_cols:
         logger.info('Reading monocores data.')
         monocore_df = load_dataset(CFG['monocore_file_details'])
         
-        logger.info('Applying monocore dictionary.')
-        input_data_monocore = apply_all_col_dict(input_data, monocore_df)
+        if CFG['one_hot_encoding']:
+            input_data = apply_one_hot_encoder(input_data)
+        
+        if CFG['use_monocores']:
+            logger.info(f'Applying monocore dictionary to columns {regular_cols}.')
+            input_data = apply_all_col_dict(input_data, monocore_df, regular_cols)
+        
+        input_data_transform = pd.concat((input_data_transform, input_data), axis=1)
     
-    return input_data_monocore.values
+    return input_data_transform.values
 
 
 if __name__ == '__main__':
     temp = create_evolution_dict('rho_evolution')
-    print('elo')
+    logger.info('Done!')

@@ -69,11 +69,11 @@ def plot_result(history):
     plt.show()
 
 
-def get_test_model(X: np.ndarray, y: np.ndarray,) -> tuple:
+def train_model(X_train: np.ndarray,
+                y_train: np.ndarray,
+                X_test: np.ndarray,
+                y_test: np.ndarray) -> tuple:
     """ Get prediction of the random sample along with testing data """
-    
-    logger.info('Divide data into train and test.')
-    X_train, X_test, y_train, y_test = prepare_data(X, y)
     
     logger.info('Building neural network.')
     model = create_nn(input_size=X_train.shape[1], output_size=y_train.shape[1])
@@ -84,6 +84,6 @@ def get_test_model(X: np.ndarray, y: np.ndarray,) -> tuple:
     logger.info('Training neural network.')
     model.fit(X_train, y_train, epochs=CFG['epochs'], validation_data=(X_test, y_test), verbose=0)
     
-    plot_result(model.history)
+    # plot_result(model.history)
     
-    return X_test, y_test, model
+    return model
