@@ -2,12 +2,11 @@
 # GENERAL SETTINGS
 # =================================================================================================
 
-# Possible values: 1/4 and 1/8
-core_symmetry: 1/4
-
+core_symmetry: 1/4 # Possible values: 1/4 and 1/8
 one_hot_encoding: False
-
+log_transform_output: False
 train_split: 0.2
+save_output: True
 
 # Possible outputs:
 # - keff_start
@@ -135,4 +134,17 @@ metrics:
   - std_absolute_error
   - mean_relative_error
   - std_relative_error
-  
+
+
+# =============================================================================
+# SAVING THE OUTPUT
+# =============================================================================
+
+output_directory: output
+add_timestamp: False
+add_preffix_number: False
+
+create_config_file: True
+create_evaluation_file: False
+create_loss_plot: True
+create_accuracy_plot: True

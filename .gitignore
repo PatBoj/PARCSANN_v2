@@ -1,2 +1,9 @@
+.pytest_cache
+**/__pycache__/**
+**/*.egg.info/**
+
+__pycache__/
+*.py[cod]
+*$py.class
+
 .vscode
-notes.txt

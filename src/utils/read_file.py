@@ -11,7 +11,7 @@ def read_raw_excel(file_path: str, sheet_name: str = None) -> pd.DataFrame:
 
 def read_raw_csv(path: str, sep: str = ',') -> pd.DataFrame:
     """ Read raw .csv file """
-    
+
     if sep is None:
         sep = ','
     
@@ -37,7 +37,13 @@ def create_new_multiple_columns_single_series(
     df: pd.DataFrame,
     new_col_template: str,
     formula_template: str) -> pd.DataFrame:
-    """ Create new multiple columns based on single configuration line """
+    """ 
+    Create new multiple columns based on a single configuration line in 'multiple_cols' 
+    For example in the file we have columns named 'sec1', 'sec2', 'sec3', ..., and we want to
+    convert them all into minutes. In that case in 'multiple_cols' we can write:
+        minN: 'df.secN / 60'
+    All 'secN' columns will be divided by 60, and new columns with names 'minN' will be created
+    """
     
     df_new = df.copy()
     i = 0
@@ -67,7 +73,7 @@ def create_new_multiple_columns(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
 
 
 def create_new_single_columns(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
-    """ Create new single columns """
+    """ Create new single columns based on the configuration 'single_cols' """
     
     df_new = df.copy()
     
@@ -79,6 +85,7 @@ def create_new_single_columns(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
 
 
 def fix_column_names(df: pd.DataFrame) -> pd.DataFrame:
+    """ Fixing weird column names from excel """
     
     fix_column_names = [col.replace(u'\xa0', '') for col in df.columns]
     fix_column_names = [col.strip() for col in fix_column_names]
@@ -89,7 +96,8 @@ def fix_column_names(df: pd.DataFrame) -> pd.DataFrame:
     
     return df_fix
 
-    
+
+@logger.catch(onerror=lambda _: sys.exit(1))
 def create_new_columns(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     """ Create new columns based on the configuration file """
     
@@ -99,15 +107,16 @@ def create_new_columns(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         return df
     
     logger.info('Creating new columns.')
-    
+
     for new_cols_type, cfg_new_columns in cfg.items():
         if new_cols_type == 'single_cols':
-            logger.info('Creating new single columns.')
             df_new = create_new_single_columns(df_new, cfg_new_columns)
 
         elif new_cols_type == 'multiple_cols':
-            logger.info('Creating new multiple columns.')
             df_new = create_new_multiple_columns(df_new, cfg_new_columns)
+
+        else:
+            raise KeyError('Invalid entry in "create_new_cols", only "single_cols" and "multiple_cols" are possible.')
 
     return df_new
 

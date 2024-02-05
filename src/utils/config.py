@@ -4,14 +4,14 @@ from loguru import logger
 
 
 def load_yaml(path: str) -> dict:
-    """ Load a YAML file from the given path and return its content as a dictionary. """
+    """ Load a YAML file from the given path and return its content as a dictionary """
 
     logger.info(f'Reading YAML file {path}.')
     return safe_load(open(path, mode='r'))
 
 
 def load_config() -> dict:
-    """ Load a configuration from a YAML file and return it as a dictionary. """
+    """ Load and check a configuration from a YAML file and return it as a dictionary """
 
     cfg = load_yaml('configs/config.yaml')
     check_config(cfg)
@@ -20,6 +20,7 @@ def load_config() -> dict:
 
 
 def basic_errors(variable: object, variable_name: str, variable_type: object) -> None:
+    """ Check if the variable exists and if it has a good data type """
     
     if variable is None:
         raise KeyError(f'"{variable_name}" is missing in a configuration file.')
@@ -30,13 +31,23 @@ def basic_errors(variable: object, variable_name: str, variable_type: object) ->
 
 @logger.catch(onerror=lambda _: sys.exit(1))
 def check_config(cfg: dict) -> None:
-    
+    """ Check configuration file for errors """
+
+    # =============================================================================================
+    # GENERAL SETTINGS
+    # =============================================================================================
+
     ### CORE SYMMETRY ###
     core_symmetry = cfg.get('core_symmetry')
     basic_errors(core_symmetry, 'core_symmetry', str)
 
     if core_symmetry not in ['1/4', '1/8']:
         raise ValueError(f'Invalid "core_symmetry" value: "{core_symmetry}", "1/4" or "1/8" values are possible.')
+
+
+    ### TRANSFORM OUTPUT ###
+    transform_output = cfg.get('log_transform_output')
+    basic_errors(transform_output, 'log_transform_output', bool)
 
 
     ### ONE HOT ENCODING ###
@@ -51,12 +62,21 @@ def check_config(cfg: dict) -> None:
         
     if (train_split < 0) | (train_split > 1):
         raise ValueError(f'Invalid "train_split" value: {train_split}, it must be a number between 0 and 1.')
-        
+    
+    
+    ### SAVE OUTPUT ###
+    save_output = cfg.get('save_output')
+    basic_errors(save_output, 'save_output', bool)
+    
     
     ### OUTPUT COLUMNS ###
     output_columns = cfg.get('output_columns')
     basic_errors(output_columns, 'output_columns', list)
-
+    
+    
+    # =============================================================================================
+    # INPUT FILES SETTINGS
+    # =============================================================================================
 
     ### INPUT OUTPUT FILE ###
     input_output_file_details = cfg.get('input_output_file_details')
@@ -74,6 +94,10 @@ def check_config(cfg: dict) -> None:
     basic_errors(file_path, 'file_path', str)
     
     
+    # =============================================================================================
+    # MONOCORE SETTINGS
+    # =============================================================================================
+    
     ### USE MONOCORES ###
     use_monocores = cfg.get('use_monocores')
     basic_errors(use_monocores, 'use_monocores', bool)
@@ -88,6 +112,10 @@ def check_config(cfg: dict) -> None:
     transform_column_names = cfg.get('transform_column_names')
     basic_errors(transform_column_names, 'transform_column_names', list)
     
+    
+    # =============================================================================================
+    # NEURAL NETWORK SETTINGS
+    # =============================================================================================
     
     ### LAYERS ###
     layers = cfg.get('layers')
@@ -144,9 +172,52 @@ def check_config(cfg: dict) -> None:
         raise ValueError(f'Invalid "epochs" value: {epochs}, it must be an integer greater than 0.')
 
 
+    # =============================================================================================
+    # EVALUATION OF THE MODEL
+    # =============================================================================================
+
     ### METRICS ###
     metrics = cfg.get('metrics')
     basic_errors(metrics, 'metrics', list)
+    
+    
+    # =============================================================================================
+    # SAVING THE OUTPUT
+    # =============================================================================================
+    
+    ### OUTPUT DIRECTORY ###
+    output_directory = cfg.get('output_directory')
+    basic_errors(output_directory, 'output_directory', str)
+    
+    
+    ### ADD TIMESTAMP ###
+    add_timestamp = cfg.get('add_timestamp')
+    basic_errors(add_timestamp, 'add_timestamp', bool)
+    
+    
+    ### ADD PREFFIX NUMBER ###
+    add_preffix_number = cfg.get('add_preffix_number')
+    basic_errors(add_preffix_number, 'add_preffix_number', bool)
+    
+    
+    ### CREATE CONFIG FILE ###
+    create_config_file = cfg.get('create_config_file')
+    basic_errors(create_config_file, 'create_config_file', bool)
+    
+    
+    ### CREATE EVALUATION FILE ###
+    create_evaluation_file = cfg.get('create_evaluation_file')
+    basic_errors(create_evaluation_file, 'create_evaluation_file', bool)
+    
+    
+    ### CREATE LOSS PLOT ###
+    create_loss_plot = cfg.get('create_loss_plot')
+    basic_errors(create_loss_plot, 'create_loss_plot', bool)
+    
+    
+    ### CREATE ACCURACY PLOT ###
+    create_accuracy_plot = cfg.get('create_accuracy_plot')
+    basic_errors(create_accuracy_plot, 'create_accuracy_plot', bool)
 
 
 CFG = load_config()
