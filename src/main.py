@@ -1,5 +1,6 @@
 import pandas as pd
 from loguru import logger
+from utils.useful_functions import timeit
 
 from s01_get_data import get_input_output
 from s02_transform_input import transform_input
@@ -15,6 +16,7 @@ from pprint import pprint
 from utils.config import CFG
 
 
+@timeit
 def main():
 
     logger.info('Preparing input and output.')
@@ -34,6 +36,9 @@ def main():
     logger.info('Creating, and training the model.')
     model = train_model(X_train, y_train, X_test, y_test)
     
+    logger.info('Copying loss and accuracy functions data.')
+    model_history = model.history.history
+    
     logger.info('Predicting.')
     y_pred = model.predict(X_test)
     
@@ -41,14 +46,13 @@ def main():
     y_test = transform_output(output_data=y_pred, column_names=output_column_names)
     y_pred = transform_output(output_data=y_pred, column_names=output_column_names)
     
-    # EVALUATION GOES HERE
+    # EVALUATION GOES HERE <<<<<<<<<<<<<<<<<<<<<<<
     
-    # SAVE OUTPUT
     logger.info('Saving output data.')
     save_output(
         y_true=y_test,
         y_pred=y_pred,
-        model_history=model.history.history,
+        model_history=model_history,
         preffix_number=1)
 
     # logger.info('Calculating metrics.')
@@ -79,7 +83,6 @@ def main():
     
     # logger.info(f'Output metrics:\n{df_metrics}')
 
-    logger.info('Everything went smoothly (͡ ° ͜ʖ ͡ °)')
 
 if __name__ == '__main__':
     main()

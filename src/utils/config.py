@@ -42,8 +42,8 @@ def check_config(cfg: dict) -> None:
 
 
     ### TRANSFORM OUTPUT ###
-    transform_output = cfg.get('transform_output')
-    basic_errors(transform_output, 'transform_output', bool)
+    transform_output = cfg.get('log_transform_output')
+    basic_errors(transform_output, 'log_transform_output', bool)
 
 
     ### ONE HOT ENCODING ###

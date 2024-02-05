@@ -1,4 +1,6 @@
 from itertools import compress, product
+from functools import wraps
+from loguru import logger
 import numpy as np
 import pandas as pd
 import re
@@ -24,7 +26,7 @@ def get_output_column_names(df: pd.DataFrame, output_cols: list) -> list:
         return output_cols
     
     evolution_cols = list(compress(output_cols, evolution_cols_mask))
-    output_cols = list(compress(output_cols, evolution_cols_mask))
+    output_cols = list(compress(output_cols, ~evolution_cols_mask))
     
     for evolution_col in evolution_cols:
         output_cols += rename_evolution_cols(df, evolution_col)
@@ -69,3 +71,22 @@ def unpack_list(input_vector: list) -> list:
             input_vector[i] = ', '.join(input_vector[i])
             
     return input_vector
+
+
+def timeit(func):
+    
+    @wraps(func)
+    def timeit_wrapper(*args, **kwargs):
+
+        logger.info('Starting the program.')
+        start_time = pd.Timestamp.now()
+        
+        result = func(*args, **kwargs)
+
+        end_time = pd.Timestamp.now()
+        total_time = end_time - start_time
+        logger.info(f'Everything went smoothly (͡ ° ͜ʖ ͡ °), it took {str(total_time).split(".")[0]}.')
+
+        return result
+
+    return timeit_wrapper

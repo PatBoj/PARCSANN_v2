@@ -9,7 +9,7 @@ from utils.config import CFG
 def apply_transformer(df: pd.DataFrame) -> pd.DataFrame:
     """ Applies custom transformer to the data """
     
-    if not CFG['transform_output']:
+    if not CFG['log_transform_output']:
         return df        
 
     logger.info('Applying logarithm transformer to the ouput data.')
@@ -22,7 +22,7 @@ def reverse_transformer(ndmatrix: pd.DataFrame, column_names: list) -> pd.DataFr
     
     df = pd.DataFrame(ndmatrix, columns=column_names)
     
-    if not CFG['transform_output']:
+    if not CFG['log_transform_output']:
         return df
     
     logger.info('Applying reverse logarithm transformer to the ouput data.')

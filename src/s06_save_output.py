@@ -3,7 +3,7 @@ import yaml
 
 import numpy as np
 import pandas as pd
-from datetime import datetime
+import matplotlib.pyplot as plt
 
 from utils.config import CFG
 from loguru import logger
@@ -26,7 +26,7 @@ def prepare_preffix(number: int) -> str:
             preffix = f'{str(number)}_'
     
     if CFG['add_timestamp']:
-        timestamp = datetime.now().strftime('%Y-%m-%d-%Hh-%Mm')
+        timestamp = pd.Timestamp.now().strftime('%Y-%m-%d-%Hh-%Mm')
         preffix = f'{preffix}{timestamp}_'
         
     return preffix
@@ -49,6 +49,21 @@ def save_config_file(file_name: str, preffix: str = '') -> None:
 
     with open(file_path, 'w') as file:
         yaml.dump(CFG, file)
+        
+
+def save_linear_plot(model_history: dict, type: str, file_name: str, preffix: str) -> None:
+
+    plt.plot(model_history[f'{type}'])
+    plt.plot(model_history[f'val_{type}'])
+
+    plt.title(f'Model {type}')
+    plt.ylabel(f'{type}')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+
+    file_path = os.path.join(CFG['output_directory'], f'{preffix}{file_name}')
+    plt.savefig(file_path)
+    plt.close()
 
 
 def save_output(
@@ -81,7 +96,9 @@ def save_output(
         logger.info('Saving files without a preffix.')
     
     logger.info('Saving output data.')
-    y_to_save.to_csv(os.path.join(CFG['output_directory'], f'{preffix}{output_file_name}'))
+    y_to_save.to_csv(
+        os.path.join(CFG['output_directory'], f'{preffix}{output_file_name}'),
+        index_label='line')
 
     if CFG['create_config_file']:
         logger.info('Saving configuration file.')
@@ -101,7 +118,7 @@ def save_output(
             logger.warning('Saving loss function plot was set in the configuration file, but "model.history.history" was not given as an argument of the "save_output" function.')
 
         logger.info('Saving loss function plot.')
-        pass
+        save_linear_plot(model_history, 'loss', loss_plot_file_name, preffix)
     
     if CFG['create_accuracy_plot']:
         
@@ -109,4 +126,4 @@ def save_output(
             logger.warning('Saving evaluation dataframe was set in the configuration file, but "model.history.history" was not given as an argument of the "save_output" function.')
 
         logger.info('Saving accuracy function plot.')
-        pass
+        save_linear_plot(model_history, 'accuracy', accuracy_plot_file_name, preffix)

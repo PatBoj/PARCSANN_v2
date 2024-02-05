@@ -3,7 +3,6 @@ import pandas as pd
 import os
 
 from loguru import logger
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 from keras.models import Sequential
@@ -56,17 +55,7 @@ def compile_nn(model: Sequential) -> None:
     
     logger.info(f'Compiling neural network with "{CFG["loss_function"]}" loss function and {CFG["learning_rate"]} learing rate value.')
     custom_optimizer = optimizers.Adam(learning_rate=CFG["learning_rate"])
-    model.compile(loss=CFG["loss_function"], optimizer=custom_optimizer)
-
-
-def plot_result(history):
-    plt.plot(history.history['loss'])
-    plt.plot(history.history['val_loss'])
-    plt.title('model loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'test'], loc='upper left')
-    plt.show()
+    model.compile(loss=CFG["loss_function"], optimizer=custom_optimizer, metrics=['accuracy'])
 
 
 def train_model(X_train: np.ndarray,
@@ -83,7 +72,5 @@ def train_model(X_train: np.ndarray,
     
     logger.info('Training neural network.')
     model.fit(X_train, y_train, epochs=CFG['epochs'], validation_data=(X_test, y_test), verbose=0)
-    
-    # plot_result(model.history)
     
     return model
