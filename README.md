@@ -32,11 +32,11 @@ conda activate myenv
 
 Replace `myenv` with the name of your environment. Activating the environment ensures that any subsequent package installations or commands are executed within the virtual environment.
 
-5. Install packages from a `requirements.txt` file:
+5. Install packages on the new environment:
 
 
 ```
-pip install -r requirements.txt
+pip install -e .
 ```
 
 Make sure the `requirements.txt` file is present in the current directory. This command will install all the packages listed in the file, along with their specified versions, into the virtual environment.

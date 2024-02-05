@@ -121,20 +121,6 @@ epochs: 2000
 
 
 # =============================================================================
-# SAVING THE OUTPUT
-# =============================================================================
-
-output_directory: output
-add_timestamp: True
-add_preffix_number: True
-
-create_config_file: False
-create_evaluation_file: False
-create_loss_plot: False
-create_accuracy_plot: False
-
-
-# =============================================================================
 # EVALUATION OF THE MODEL
 # =============================================================================
 
@@ -149,3 +135,16 @@ metrics:
   - mean_relative_error
   - std_relative_error
 
+
+# =============================================================================
+# SAVING THE OUTPUT
+# =============================================================================
+
+output_directory: output
+add_timestamp: False
+add_preffix_number: False
+
+create_config_file: True
+create_evaluation_file: False
+create_loss_plot: True
+create_accuracy_plot: True

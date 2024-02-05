@@ -46,7 +46,7 @@ class ExperimentEvolutionPARCSANN:
         y_pred = model.predict(X_test, verbose=0)
         
         logger.info('Preparing output data.')
-        y_test = transform_output(output_data=y_pred, column_names=self.output_column_names)
+        y_test = transform_output(output_data=y_test, column_names=self.output_column_names)
         y_pred = transform_output(output_data=y_pred, column_names=self.output_column_names)
     
         logger.info('Saving output data.')

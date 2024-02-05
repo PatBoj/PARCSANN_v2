@@ -1,0 +1,10 @@
+e01_testing
+e02_evolution_plots
+main
+s01_get_data
+s02_transform_input
+s03_transform_output
+s04_model
+s05_evaluate
+s06_save_output
+utils

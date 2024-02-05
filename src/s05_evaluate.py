@@ -9,7 +9,7 @@ from utils.metrics import std_absolute_error
 from utils.metrics import mean_relative_error
 from utils.metrics import std_relative_error
 
-
+### FIXME: Refactor metric function
 def apply_single_metric(y_true: np.ndarray, y_pred: np.ndarray, metric: str) -> np.ndarray:
     
     if metric == 'mean_absolute_error':

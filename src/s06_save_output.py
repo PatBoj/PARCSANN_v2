@@ -10,12 +10,14 @@ from loguru import logger
 
     
 def create_output_dir() -> None:
+    """ Check if output directory exists create one otherwise """
     
     if not os.path.exists(CFG['output_directory']):
       os.makedirs(CFG['output_directory'])
       
 
 def prepare_preffix(number: int) -> str:
+    """ Create preffix to the filenames """
     
     preffix = ''
     
@@ -33,7 +35,8 @@ def prepare_preffix(number: int) -> str:
     
 
 def prepare_output_to_save(y_true: pd.DataFrame, y_pred: pd.DataFrame) -> pd.DataFrame():
-    
+    """ Prepare output to save """
+
     y_true_to_save = y_true.copy()
     y_true_to_save['origin'] = 'true'
     
@@ -44,6 +47,7 @@ def prepare_output_to_save(y_true: pd.DataFrame, y_pred: pd.DataFrame) -> pd.Dat
 
 
 def save_config_file(file_name: str, preffix: str = '') -> None:
+    """ Save configuration file """
 
     file_path = os.path.join(CFG['output_directory'], f'{preffix}{file_name}')
 
@@ -52,6 +56,7 @@ def save_config_file(file_name: str, preffix: str = '') -> None:
         
 
 def save_linear_plot(model_history: dict, type: str, file_name: str, preffix: str) -> None:
+    """ Save a plot """
 
     plt.plot(model_history[f'{type}'])
     plt.plot(model_history[f'val_{type}'])
@@ -72,6 +77,7 @@ def save_output(
     evaluation_df: pd.DataFrame = None,
     model_history: dict = None,
     preffix_number: int = None) -> None:
+    """ Save all outputs """
     
     if not CFG['save_output']:
         logger.warning('Output data will not be saved. Change the value of "save_output" in the configuration file to save data.')

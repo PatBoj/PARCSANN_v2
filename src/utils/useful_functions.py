@@ -4,6 +4,7 @@ from loguru import logger
 import numpy as np
 import pandas as pd
 import re
+import winsound
 
 
 def rename_evolution_cols(df: pd.DataFrame, col_evolution: str) -> np.ndarray:
@@ -74,6 +75,7 @@ def unpack_list(input_vector: list) -> list:
 
 
 def timeit(func):
+    """ Calculate time of program execution """
     
     @wraps(func)
     def timeit_wrapper(*args, **kwargs):
@@ -86,6 +88,8 @@ def timeit(func):
         end_time = pd.Timestamp.now()
         total_time = end_time - start_time
         logger.info(f'Everything went smoothly (͡ ° ͜ʖ ͡ °), it took {str(total_time).split(".")[0]}.')
+
+        winsound.Beep(440, 1000)
 
         return result
 
