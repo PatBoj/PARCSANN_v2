@@ -43,7 +43,7 @@ def main():
     y_pred = model.predict(X_test)
     
     logger.info('Preparing output data.')
-    y_test = transform_output(output_data=y_pred, column_names=output_column_names)
+    y_test = transform_output(output_data=y_test, column_names=output_column_names)
     y_pred = transform_output(output_data=y_pred, column_names=output_column_names)
     
     # EVALUATION GOES HERE <<<<<<<<<<<<<<<<<<<<<<<

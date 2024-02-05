@@ -43,7 +43,7 @@ class ExperimentEvolutionPARCSANN:
         model_history = model.history.history
         
         logger.info('Predicting.')
-        y_pred = model.predict(X_test)
+        y_pred = model.predict(X_test, verbose=0)
         
         logger.info('Preparing output data.')
         y_test = transform_output(output_data=y_pred, column_names=self.output_column_names)
@@ -58,7 +58,7 @@ class ExperimentEvolutionPARCSANN:
 
     def run_experiment(self):
         
-        N = 50
+        N = 3
         threads = []
         
         for i in range(1, N+1):
