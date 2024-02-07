@@ -3,7 +3,7 @@
 # =================================================================================================
 
 core_symmetry: 1/4 # Possible values: 1/4 and 1/8
-one_hot_encoding: False
+one_hot_encoding: True
 log_transform_output: False
 train_split: 0.2
 save_output: True
@@ -20,7 +20,8 @@ save_output: True
 # - keff_evolution
 # - rho_evolution
 output_columns:
-  - rho_evolution
+  - cycle_length_in_days
+  - rho_max
 
 
 # =================================================================================================
@@ -79,7 +80,8 @@ core_number_column_name: monocore
 # - rho_evolution
 # - ppf_evolution
 transform_column_names:
-  - rho_evolution
+  - cycle_length_in_days
+  - rho_max
 
 
 # =================================================================================================
@@ -127,13 +129,13 @@ epochs: 2000
 # Possible metrics:
 # - mean_absolute_error
 # - std_absolute_error
-# - mean_relative_error
-# - std_relative_error
+# - mean_absolute_percentage_error
+# - std_absolute_percentage_error
 metrics:
   - mean_absolute_error
   - std_absolute_error
-  - mean_relative_error
-  - std_relative_error
+  - mean_absolute_percentage_error
+  - std_absolute_percentage_error
 
 
 # =============================================================================
@@ -141,10 +143,10 @@ metrics:
 # =============================================================================
 
 output_directory: output
-add_timestamp: False
+add_timestamp: True
 add_preffix_number: False
 
 create_config_file: True
-create_evaluation_file: False
+create_evaluation_file: True
 create_loss_plot: True
 create_accuracy_plot: True

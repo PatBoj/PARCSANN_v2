@@ -116,7 +116,9 @@ def save_output(
             logger.warning('Saving evaluation dataframe was set in the configuration file, but evaluation dataset was not given as an argument of the "save_output" function.')
         
         logger.info('Saving evaluation file.')
-        pass
+        evaluation_df.to_csv(
+        os.path.join(CFG['output_directory'], f'{preffix}{evaluation_file_name}'),
+        index_label='metric')
     
     if CFG['create_loss_plot']:
         

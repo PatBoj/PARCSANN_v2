@@ -43,12 +43,16 @@ def main():
     y_test = transform_output(output_data=y_test, column_names=output_column_names)
     y_pred = transform_output(output_data=y_pred, column_names=output_column_names)
     
-    # EVALUATION GOES HERE <<<<<<<<<<<<<<<<<<<<<<<
+    logger.info('Evaluating the model.')
+    evaluation_df = evaluate_model(y_true=y_test, y_pred=y_pred)
+    
+    logger.info(f'Evaluation data frame:\n{evaluation_df}')
     
     logger.info('Saving output data.')
     save_output(
         y_true=y_test,
         y_pred=y_pred,
+        evaluation_df=evaluation_df,
         model_history=model_history)
 
 
