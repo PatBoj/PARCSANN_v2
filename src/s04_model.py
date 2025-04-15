@@ -71,6 +71,6 @@ def train_model(X_train: np.ndarray,
     compile_nn(model)
     
     logger.info('Training neural network.')
-    model.fit(X_train, y_train, epochs=CFG['epochs'], validation_data=(X_test, y_test), verbose=0)
+    model.fit(X_train, y_train, epochs=CFG['epochs'], validation_data=(X_test, y_test))
     
     return model

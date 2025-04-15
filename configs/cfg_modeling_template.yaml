@@ -1,0 +1,77 @@
+# =====================================================================================================================
+# DATA SETTINGS
+# =====================================================================================================================
+
+tuning: True
+core_symmetry: 1/4 # Possible values: 1/4 and 1/8
+one_hot_encoding: False
+use_monocores: False
+train_split: 0.2
+
+# Possible transform colum names:
+#
+# - cycle_length_in_days
+# - keff_max
+# - pxy_max
+# - pz_max
+# - keff_start
+# - ppf_start
+# - ppf_max
+# - ppf_end
+# - rho_start
+# - rho_max
+#
+# - keff_evolution
+# - rho_evolution
+# - ppf_evolution
+input_columns:
+  - cycle_length_in_days
+
+# Possible outputs:
+#
+# - keff_start
+# - keff_max
+# - ppf_start
+# - ppf_max
+# - ppf_end
+# - cycle_length_in_days
+# - rho_start
+# - rho_max
+#
+# - keff_evolution
+# - rho_evolution
+output_columns:
+  - cycle_length_in_days
+
+
+# =====================================================================================================================
+# NETWORK SETTING
+# =====================================================================================================================
+
+# Possible activation functions:
+# - relu
+# - sigmoid
+# - softmax
+# - softplus
+# - softsign
+# - tanh
+# - selu
+# - elu
+# - exponential
+# - linear
+
+layers:
+  layer1:
+    neurons: 60
+    activation: linear
+
+  layer2:
+    neurons: 60
+    activation: linear
+
+  layer_output:
+    activation: linear
+
+loss_function: mean_absolute_error
+learning_rate: 0.001
+epochs: 200

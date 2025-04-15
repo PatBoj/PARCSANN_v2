@@ -16,10 +16,10 @@ This guide will walk you through the process of creating a virtual environment w
 conda update conda
 ```
 
-3. Create a new virtual environment with Python 3.10.6:
+3. Create a new virtual environment with Python 3.11:
 
 ```
-conda create --name myenv python=3.10.6
+conda create --name myenv python=3.11
 ```
 
 Replace `myenv` with the desired name for your environment. This command will create a new environment called `myenv` and install Python version 3.10.6 in it.

@@ -5,7 +5,6 @@ from utils.useful_functions import timeit
 
 from s01_get_data import get_input_output
 from s02_transform_input import transform_input
-from s03_transform_output import transform_output
 from s04_model import train_model
 from s05_evaluate import evaluate_model
 from s06_save_output import save_output
