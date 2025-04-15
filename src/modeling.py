@@ -5,8 +5,6 @@ from prepare_data import CoreData
 from keras import optimizers
 import matplotlib.pyplot as plt
 import pandas as pd
-from multiprocessing import Process
-import multiprocessing
 from tqdm import tqdm
 
 from configs.config_modeling import ConfigModeling
