@@ -10,3 +10,4 @@ loguru==0.7.2
 seaborn==0.13.0
 ruff==0.4.4
 tqdm==4.67.1
+keras-tuner==1.4.7

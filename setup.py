@@ -7,4 +7,4 @@ with open("VERSION") as f:
 with open("requirements.txt") as f:
     requirements = [str(req) for req in parse_requirements(f.read())]
 
-setup(name="PARCSANN", python_requires=">3.11", version=version, install_requires=requirements)
+setup(name="PARCSANN", python_requires=">=3.11", version=version, install_requires=requirements)

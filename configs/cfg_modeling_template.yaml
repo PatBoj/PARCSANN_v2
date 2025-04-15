@@ -5,7 +5,7 @@
 tuning: True
 core_symmetry: 1/4 # Possible values: 1/4 and 1/8
 one_hot_encoding: False
-use_monocores: False
+use_monocores: True
 train_split: 0.2
 
 # Possible transform colum names:

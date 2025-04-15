@@ -4,7 +4,7 @@ from configs.config_data import ConfigData
 from configs.config_modeling import ConfigModeling
 from src.prepare_data import CoreData
 
-TF_ENABLE_ONEDNN_OPTS=0 # This is for reproducibility of resets, remove it after everything is ok
+# TF_ENABLE_ONEDNN_OPTS=0 # This is for reproducibility of resets, remove it after everything is ok
 
 
 def main() -> None:
