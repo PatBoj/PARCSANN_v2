@@ -116,8 +116,7 @@ class NeuralNetwork:
                 self.y_train,
                 epochs=200,
                 validation_data=(self.x_test, self.y_test),
-                verbose=0,
-                callbacks=[self.history_callback, tf.keras.callbacks.LambdaCallback(on_epoch_end=lambda epoch, logs: pbar.update(1))],
+                verbose=1,
             )
 
         best_model = tuner.get_best_models(num_models=1)[0]
