@@ -73,16 +73,11 @@ class NeuralNetwork:
 
 
     def create_neural_network_tuning(self, hp) -> tf.keras.Model:
-        n_hidden_layers = hp.Int("n_hidden_layers", min_value=2, max_value=6, default=2)
-        n_neurons = hp.Int("n_neurons", min_value=10, max_value=90)
-        learning_rate = hp.Float("learning_rate", min_value=1e-8, max_value=1e-2, sampling="log")
-        optimizer_name = hp.Choice("optimizer", values=["sgd", "adam"])
+        n_hidden_layers = hp.Int("n_hidden_layers", min_value=2, max_value=4, default=2)
+        n_neurons = hp.Int("n_neurons", min_value=5, max_value=70)
+        learning_rate = hp.Float("learning_rate", min_value=1e-6, max_value=1e-3, sampling="log")
 
-        optimizer = (
-            tf.keras.optimizers.SGD(learning_rate=learning_rate)
-            if optimizer_name == "sgd"
-            else tf.keras.optimizers.Adam(learning_rate=learning_rate)
-        )
+        optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
         model = tf.keras.Sequential()
         normalization_layer = tf.keras.layers.Normalization(axis=1)
@@ -101,7 +96,7 @@ class NeuralNetwork:
         return model
 
     def find_best_hyperparameters(self):
-        N = 10_000
+        N = 6_000
 
         tuner = kt.RandomSearch(
             lambda hp: self.create_neural_network_tuning(hp),
@@ -109,7 +104,7 @@ class NeuralNetwork:
             max_trials=N,
             overwrite=True,
             directory="../output/final_trials",
-            project_name="my_first_test",
+            project_name="positions-cycle_length",
             seed=0,
         )
 
@@ -119,7 +114,7 @@ class NeuralNetwork:
             tuner.search(
                 self.x_train,
                 self.y_train,
-                epochs=300,
+                epochs=200,
                 validation_data=(self.x_test, self.y_test),
                 verbose=0,
                 callbacks=[self.history_callback, tf.keras.callbacks.LambdaCallback(on_epoch_end=lambda epoch, logs: pbar.update(1))],

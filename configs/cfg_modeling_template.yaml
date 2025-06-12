@@ -2,10 +2,10 @@
 # DATA SETTINGS
 # =====================================================================================================================
 
-tuning: True
+tuning: False
 core_symmetry: 1/4 # Possible values: 1/4 and 1/8
 one_hot_encoding: False
-use_monocores: True
+use_monocores: False
 train_split: 0.2
 
 # Possible transform colum names:
@@ -62,16 +62,16 @@ output_columns:
 
 layers:
   layer1:
-    neurons: 60
+    neurons: 10
     activation: linear
 
   layer2:
-    neurons: 60
+    neurons: 10
     activation: linear
 
   layer_output:
     activation: linear
 
 loss_function: mean_absolute_error
-learning_rate: 0.001
-epochs: 200
+learning_rate: 0.00005
+epochs: 300
