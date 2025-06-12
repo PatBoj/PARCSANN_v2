@@ -101,14 +101,14 @@ class NeuralNetwork:
         return model
 
     def find_best_hyperparameters(self):
-        N = 2000
+        N = 10_000
 
         tuner = kt.RandomSearch(
             lambda hp: self.create_neural_network_tuning(hp),
             objective="val_mean_absolute_error",
             max_trials=N,
             overwrite=True,
-            directory="../output/test",
+            directory="../output/final_trials",
             project_name="my_first_test",
             seed=0,
         )
