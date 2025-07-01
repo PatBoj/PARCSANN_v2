@@ -25,7 +25,8 @@ train_split: 0.2
 # - rho_evolution
 # - ppf_evolution
 input_columns:
-  - rho_evolution
+  - cycle_length_in_days
+  - rho_max
 
 # Possible outputs:
 #
@@ -41,7 +42,7 @@ input_columns:
 # - keff_evolution
 # - rho_evolution
 output_columns:
-  - rho_evolution
+  - cycle_length_in_days
 
 
 # =====================================================================================================================
