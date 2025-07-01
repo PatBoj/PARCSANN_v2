@@ -10,7 +10,7 @@ from src.prepare_data import CoreData
 def main() -> None:
     """Main ofc."""
     cfg_data = ConfigData()
-    cfg_modeling = ConfigModeling()
+    cfg_modeling = ConfigModeling('../configs/cfg_modeling_hyperparameters.yaml')
     core_data = CoreData(cfg_data)(cfg_modeling)
 
     nn = NeuralNetwork(cfg_modeling, core_data)
