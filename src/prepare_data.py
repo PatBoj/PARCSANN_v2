@@ -43,7 +43,7 @@ def get_monocore_dict(df_dict: pd.DataFrame, value_col: str) -> dict:
     Returns:
         dict: dictionary that contains information about `rod_id` (or `rod_id + time_id`) and selected value.
     """
-    index_id = df_dict["rod_id"]
+    index_id = df_dict["rod_id"].copy()
     if "time_id" in df_dict.columns:
         index_id += "_" + df_dict["time_id"]
 

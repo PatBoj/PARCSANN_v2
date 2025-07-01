@@ -24,6 +24,7 @@ monocore_evolution_file_details:
   file_path: ../data/monocores_dictionary.xlsx
   keep_cols:
     - keff
+    - ppf
 
   create_new_cols:
     single_cols:

@@ -68,14 +68,23 @@ class NeuralNetwork:
 
         logger.info(
             f'Compiling neural network with "{self.cfg.LOSS_FUNCTION}" loss function and {self.cfg.LEARNING_RATE} learing rate value.')
-        custom_optimizer = optimizers.Adam(learning_rate=self.cfg.LEARNING_RATE)
-        self.model.compile(loss=self.cfg.LOSS_FUNCTION, optimizer=custom_optimizer, metrics=['mse', self.stddev_metric])
+
+        lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+            self.cfg.LEARNING_RATE,
+            decay_steps=100,
+            decay_rate=0.96,
+            staircase=True,
+        )
+        custom_optimizer = optimizers.Adam(learning_rate=lr_schedule)
+
+        self.model.compile(loss=self.cfg.LOSS_FUNCTION, optimizer=custom_optimizer, metrics=['mse', self.stddev_metric]) # , metrics=['mse', self.stddev_metric]
 
 
     def create_neural_network_tuning(self, hp) -> tf.keras.Model:
         n_hidden_layers = hp.Int("n_hidden_layers", min_value=2, max_value=4, default=2)
         n_neurons = hp.Int("n_neurons", min_value=5, max_value=70)
         learning_rate = hp.Float("learning_rate", min_value=1e-6, max_value=1e-3, sampling="log")
+        activation_function = hp.Choice('activation', values=['tanh', 'sigmoid'])
 
         optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
@@ -83,7 +92,7 @@ class NeuralNetwork:
         normalization_layer = tf.keras.layers.Normalization(axis=1)
         model.add(normalization_layer)
         for _ in range(n_hidden_layers):
-            model.add(tf.keras.layers.Dense(units=n_neurons, activation="linear"))
+            model.add(tf.keras.layers.Dense(units=n_neurons, activation=activation_function))
         model.add(tf.keras.layers.Dense(units=1, activation="linear"))
         normalization_layer.adapt(self.x_train)
 

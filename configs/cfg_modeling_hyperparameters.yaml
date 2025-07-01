@@ -2,7 +2,7 @@
 # DATA SETTINGS
 # =====================================================================================================================
 
-tuning: True
+tuning: False
 core_symmetry: 1/4 # Possible values: 1/4 and 1/8
 one_hot_encoding: True
 use_monocores: True
@@ -25,8 +25,7 @@ train_split: 0.2
 # - rho_evolution
 # - ppf_evolution
 input_columns:
-  - cycle_length_in_days
-  - rho_max
+  - rho_evolution
 
 # Possible outputs:
 #
@@ -42,7 +41,7 @@ input_columns:
 # - keff_evolution
 # - rho_evolution
 output_columns:
-  - cycle_length_in_days
+  - rho_evolution
 
 
 # =====================================================================================================================
